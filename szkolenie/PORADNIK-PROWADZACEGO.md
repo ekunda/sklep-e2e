@@ -188,6 +188,22 @@ Najlepsza nauka debugowania. Rób **na żywo** lub jako zadanie. Każdy scenariu
 - **Napraw:** odkomentuj czyszczenie.
 - **Uczy:** brak czyszczenia = testy zależne od kolejności = flaky.
 
+### Gotowe gałęzie demo (nie musisz psuć ręcznie)
+W repo są dwie gałęzie z gotową usterką — idealne na pokaz „czerwone CI → trace → fix”:
+
+| Gałąź | Scenariusz | Jak pokazać |
+|---|---|---|
+| `broken/selector` | A — zły selektor | otwórz **PR do `main`** → CI robi się czerwone → pobierz trace z artefaktów |
+| `broken/node-env` | B — brak `NODE_ENV=test` | jw. — wszystkie E2E padają na 403 |
+
+```bash
+# podgląd różnicy, którą zobaczą uczestnicy:
+git fetch origin
+git diff origin/main origin/broken/selector
+git diff origin/main origin/broken/node-env
+```
+Po pokazie: zamknij PR bez merge’a (gałęzie zostają jako materiał). `main` pozostaje zielony.
+
 ---
 
 ## Najczęstsze pytania uczestników

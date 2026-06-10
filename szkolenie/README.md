@@ -9,7 +9,7 @@ nie na slajdach.
 
 > 🎞️ Towarzysząca prezentacja na żywo: https://ekunda.github.io/sklep-e2e/
 > 🛒 Klikalne demo bez Dockera: `pnpm demo`
-> 🧑‍🏫 Prowadzisz szkolenie? → [**Warsztat (wersja prowadzona)**](WARSZTAT.md) + [**Poradnik prowadzącego**](PORADNIK-PROWADZACEGO.md)
+> 🧑‍🏫 Prowadzisz szkolenie? → [**Warsztat**](WARSZTAT.md) · [**Poradnik prowadzącego**](PORADNIK-PROWADZACEGO.md) · [**Karta A4 do druku**](KARTA-PROWADZACEGO.md)
 
 ---
 
