@@ -26,10 +26,11 @@ export default defineConfig({
   // W CI ograniczamy workerów (jedna współdzielona baza); lokalnie więcej.
   workers: process.env.CI ? 2 : undefined,
 
-  reporter: [
-    ["html", { open: "never" }],
-    ["list"],
-  ],
+  // W CI dokładamy reporter "github" — wstawia wyniki/błędy jako adnotacje
+  // w zakładce Files/Checks pull requesta.
+  reporter: process.env.CI
+    ? [["github"], ["html", { open: "never" }], ["list"]]
+    : [["html", { open: "never" }], ["list"]],
 
   use: {
     // baseURL musi pasować do portu, na którym globalSetup wystartował serwer.
