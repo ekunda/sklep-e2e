@@ -13,6 +13,9 @@ z dwoma poziomami testów na **prawdziwej infrastrukturze** — bez mocków bazy
 > koncepcje, architekturę, transakcję zamówienia, cykl życia testów, CI i realne
 > bugi złapane przez pipeline. Źródło: [`docs/index.html`](docs/index.html).
 
+> 📚 **Pełny program szkoleniowy** (7 modułów, refaktoryzacja, wersja warsztatowa,
+> sekcja zaawansowana): **[`szkolenie/README.md`](szkolenie/README.md)**
+
 ---
 
 ## 🚀 Demo na żywo (bez Dockera)
