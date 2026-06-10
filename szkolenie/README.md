@@ -9,6 +9,7 @@ nie na slajdach.
 
 > 🎞️ Towarzysząca prezentacja na żywo: https://ekunda.github.io/sklep-e2e/
 > 🛒 Klikalne demo bez Dockera: `pnpm demo`
+> ⏱️ **Masz tylko godzinę?** → [**Warsztat 60 minut**](WARSZTAT-60MIN.md) (wersja prowadzona).
 
 ---
 
@@ -549,7 +550,13 @@ Pełne przykłady są w modułach 3–4 powyżej:
 
 ---
 
-## 6. Wersja warsztatowa (≈ 4 h)
+## 6. Wersja warsztatowa
+
+Dwa formaty do wyboru:
+- ⏱️ **[Warsztat 60 minut](WARSZTAT-60MIN.md)** — wersja prowadzona (pokaz + zrozumienie + „wow” na trace). Gdy masz godzinę.
+- 🛠️ **Pełny hands-on (≈ 4 h)** — poniżej, z zadaniami i checkpointami.
+
+### Pełny hands-on (≈ 4 h)
 
 | Blok | Czas | Hands-on | Checkpoint ✅ |
 |---|---|---|---|
