@@ -66,6 +66,10 @@ strong{color:var(--text);font-weight:700}
 .code{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;
   font-family:var(--mono);font-size:14px;line-height:1.7;overflow:auto;margin-top:18px;position:relative}
 .code .tag{position:absolute;top:10px;right:14px;font-size:11px;color:var(--faint);font-family:var(--font);font-weight:600}
+.code a.tag{text-decoration:none;cursor:pointer}
+.code a.tag:hover{color:var(--accent2);text-decoration:underline}
+.rl{color:var(--accent2);text-decoration:none;font-weight:600}
+.rl:hover{text-decoration:underline}
 .code pre{white-space:pre;color:#cfd0e6}
 .cm{color:#6b7089;font-style:italic}.kw{color:var(--accent2)}.st{color:var(--green)}
 .fn{color:var(--cyan)}.nm{color:var(--amber)}.pn{color:var(--pink)}
@@ -125,7 +129,8 @@ svg text{font-family:var(--font)}
 
 /* ===== CHROME ===== */
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));z-index:10;transition:width .35s ease}
-.brand{position:fixed;top:20px;left:28px;z-index:9;display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:-.01em}
+.brand{position:fixed;top:20px;left:28px;z-index:9;display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:-.01em;color:var(--text);text-decoration:none}
+.brand:hover .logo{outline:2px solid var(--accent2)}
 .brand .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:grid;place-items:center;font-size:14px}
 .counter{position:fixed;top:22px;right:28px;z-index:9;font-family:var(--mono);font-size:13px;color:var(--dim)}
 .counter b{color:var(--text)}
@@ -159,7 +164,7 @@ svg text{font-family:var(--font)}
 </head>
 <body>
 <div class="progress" id="prog"></div>
-<div class="brand"><span class="logo">🛒</span> Sklep E2E</div>
+<a class="brand" href="https://github.com/ekunda/sklep-e2e" target="_blank" rel="noopener" title="Otwórz repo na GitHub"><span class="logo">🛒</span> Sklep E2E ↗</a>
 <div class="counter"><b id="cur">1</b> / <span id="tot">20</span></div>
 
 <div class="deck" id="deck">
@@ -168,9 +173,9 @@ svg text{font-family:var(--font)}
   <section class="slide active">
     <div class="kicker">Projekt szkoleniowy · sklep-e2e</div>
     <h1>Testcontainers + Playwright<br><span class="grad">na prawdziwej infrastrukturze</span></h1>
-    <p class="lead">Testy integracyjne i E2E dla małego sklepu — z prawdziwym PostgreSQL i Redis w kontenerach, fixturami z seedem per test, artefaktami trace i zielonym CI. Od zera do działającego pipeline'u.</p>
+    <p class="lead">Naucz się testować aplikację tak, jak działa naprawdę: z prawdziwą bazą uruchomioną w kontenerze (Testcontainers) i klikaniem po stronie w przeglądarce (Playwright). Wszystko na działającym sklepie — krok po kroku, aż do zielonego CI.</p>
     <div class="chips">
-      <span class="chip"><span class="dot" style="background:var(--cyan)"></span>~60 min · warsztat</span>
+      <span class="chip"><span class="dot" style="background:var(--cyan)"></span>warsztat hands-on</span>
       <span class="chip"><span class="dot" style="background:var(--green)"></span>Vitest</span>
       <span class="chip"><span class="dot" style="background:var(--blue)"></span>Testcontainers</span>
       <span class="chip"><span class="dot" style="background:var(--pink)"></span>Playwright</span>
@@ -182,9 +187,9 @@ svg text{font-family:var(--font)}
 
   <!-- 2 AGENDA -->
   <section class="slide">
-    <div class="kicker">Plan na 60 minut</div>
-    <h2>Agenda warsztatu</h2>
-    <p class="lead">Kliknij blok, żeby do niego przeskoczyć. Łącznie ~60 minut — wersja prowadzona (pokaz + zrozumienie).</p>
+    <div class="kicker">Plan</div>
+    <h2>Co przejdziemy</h2>
+    <p class="lead">Kliknij temat, żeby do niego przeskoczyć. Uczymy się na prawdziwym kodzie z repo.</p>
     <div class="agenda" id="agenda"></div>
   </section>
 
@@ -252,7 +257,7 @@ svg text{font-family:var(--font)}
     <div class="kicker">Co warto testować</div>
     <h2>Transakcja zamówienia — <span class="accent">wszystko albo nic</span></h2>
     <p class="lead">Blokujemy wiersze produktów (<code>FOR UPDATE</code>), sprawdzamy stan, zmniejszamy go i zapisujemy zamówienie. Brakuje czegokolwiek → <span class="r">ROLLBACK</span> i magazyn nietknięty.</p>
-    <div class="code"><span class="tag">src/routes/orders.routes.ts</span><pre><span class="kw">await</span> client.<span class="fn">query</span>(<span class="st">"BEGIN"</span>);
+    <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/src/routes/orders.routes.ts" target="_blank" rel="noopener">src/routes/orders.routes.ts ↗</a><pre><span class="kw">await</span> client.<span class="fn">query</span>(<span class="st">"BEGIN"</span>);
 <span class="kw">for</span> (<span class="kw">const</span> item <span class="kw">of</span> items) {
   <span class="kw">const</span> p = (<span class="kw">await</span> client.<span class="fn">query</span>(
     <span class="st">`SELECT stock FROM products WHERE id=$1 FOR UPDATE`</span>, [item.productId])).rows[<span class="nm">0</span>];
@@ -276,7 +281,7 @@ svg text{font-family:var(--font)}
       <div class="step"><span class="n">3</span><span>Test wykonuje operacje na <strong>realnej</strong> bazie.</span></div>
       <div class="step"><span class="n">4</span><span>Po wszystkim kontener znika — czysto, bez śmieci.</span></div>
     </div>
-    <div class="code"><span class="tag">tests/integration/global-setup.ts</span><pre><span class="cm">// Start Postgresa + Redisa raz, równolegle — szybciej.</span>
+    <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/integration/global-setup.ts" target="_blank" rel="noopener">tests/integration/global-setup.ts ↗</a><pre><span class="cm">// Start Postgresa + Redisa raz, równolegle — szybciej.</span>
 <span class="kw">const</span> [pg, redis] = <span class="kw">await</span> <span class="fn">Promise.all</span>([
   <span class="kw">new</span> <span class="fn">PostgreSqlContainer</span>(<span class="st">"postgres:16"</span>).<span class="fn">start</span>(),
   <span class="kw">new</span> <span class="fn">GenericContainer</span>(<span class="st">"redis:7"</span>).<span class="fn">withExposedPorts</span>(<span class="nm">6379</span>).<span class="fn">start</span>(),
@@ -289,36 +294,14 @@ svg text{font-family:var(--font)}
     <div class="kicker">Seed per test</div>
     <h2>Każdy test sieje <span class="accent">własne</span> dane</h2>
     <p class="lead">Koniec z globalnym seedem, który psuje się przy każdym nowym teście. Helper zwraca to, czego potrzebują asercje.</p>
-    <div class="code"><span class="tag">tests/helpers/seed.ts</span><pre><span class="kw">export async function</span> <span class="fn">seedUser</span>(pool, options = {}) {
+    <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/helpers/seed.ts" target="_blank" rel="noopener">tests/helpers/seed.ts ↗</a><pre><span class="kw">export async function</span> <span class="fn">seedUser</span>(pool, options = {}) {
   <span class="kw">const</span> opts = { email: <span class="st">`user-</span>${++c}<span class="st">@test.com`</span>, password: <span class="st">"Password123!"</span>, ...options };
   <span class="kw">const</span> hash = <span class="kw">await</span> <span class="fn">hashPassword</span>(opts.password);
   <span class="kw">const</span> r = <span class="kw">await</span> pool.<span class="fn">query</span>(<span class="st">`INSERT INTO users ... RETURNING id, email`</span>, [...]);
   <span class="kw">return</span> { ...r.rows[<span class="nm">0</span>], password: opts.password }; <span class="cm">// hasło plain do logowania</span>
 }</pre></div>
     <div class="note rd"><span>⚠️</span><span><b>Nie zakładaj <code>id = 1</code>.</b> Używaj id zwróconego z seeda — sekwencje nie resetują się między testami (to nas realnie ugryzło w CI).</span></div>
-  </section>
-
-  <!-- 8 IZOLACJA -->
-  <section class="slide">
-    <div class="kicker">Izolacja</div>
-    <h2>Czysta baza przed <span class="accent">każdym</span> testem</h2>
-    <div class="grid g2">
-      <div>
-        <ul class="bul">
-          <li><code>TRUNCATE</code> jest szybszy niż <code>DELETE</code></li>
-          <li><code>RESTART IDENTITY</code> zeruje sekwencje</li>
-          <li><code>CASCADE</code> ogarnia klucze obce</li>
-          <li>Czyścimy też cache Redis (<code>flushDb</code>)</li>
-        </ul>
-      </div>
-      <div class="code" style="margin-top:0"><span class="tag">db-cleaner.ts</span><pre><span class="kw">await</span> pool.<span class="fn">query</span>(
-  <span class="st">`TRUNCATE TABLE
-     order_items, orders,
-     products, users
-   RESTART IDENTITY CASCADE`</span>
-);</pre></div>
-    </div>
-    <div class="note gn"><span>✅</span><span>Wzorzec: <code>beforeEach(cleanDatabase)</code>. Test B nie widzi danych testu A — koniec z flaky od „brudnych" danych.</span></div>
+    <div class="note gn"><span>🧹</span><span><b>Izolacja:</b> przed każdym testem czyść bazę — <code>beforeEach(cleanDatabase)</code> robi <code>TRUNCATE … RESTART IDENTITY CASCADE</code>. Dzięki temu test B nie widzi danych testu A.</span></div>
   </section>
 
   <!-- 9 VITEST GOTCHA -->
@@ -327,10 +310,10 @@ svg text{font-family:var(--font)}
     <h2><code>process.env</code> z global-setup <span class="r">nie dociera</span> do testów</h2>
     <p class="lead">Klasyczny błąd: ustawiasz <code>DATABASE_URL</code> w global-setup, a workery testowe go nie widzą. Rozwiązanie to API <code>provide</code> / <code>inject</code>.</p>
     <div class="grid g2">
-      <div class="code" style="margin-top:0"><span class="tag">global-setup.ts</span><pre><span class="cm">// ✅ przekaż przez provide</span>
+      <div class="code" style="margin-top:0"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/integration/global-setup.ts" target="_blank" rel="noopener">global-setup.ts ↗</a><pre><span class="cm">// ✅ przekaż przez provide</span>
 <span class="fn">provide</span>(<span class="st">"databaseUrl"</span>, uri);
 <span class="fn">provide</span>(<span class="st">"redisUrl"</span>, url);</pre></div>
-      <div class="code" style="margin-top:0"><span class="tag">test-app.ts</span><pre><span class="cm">// ✅ odczytaj przez inject</span>
+      <div class="code" style="margin-top:0"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/helpers/test-app.ts" target="_blank" rel="noopener">test-app.ts ↗</a><pre><span class="cm">// ✅ odczytaj przez inject</span>
 <span class="fn">createApp</span>({
   databaseUrl: <span class="fn">inject</span>(<span class="st">"databaseUrl"</span>),
   redisUrl: <span class="fn">inject</span>(<span class="st">"redisUrl"</span>),
@@ -344,7 +327,7 @@ svg text{font-family:var(--font)}
     <div class="kicker">Playwright · fixtures</div>
     <h2>Fixture = gotowy element wstrzyknięty do testu</h2>
     <p class="lead"><code>page</code> to też fixture. My dokładamy własne: świeży użytkownik i produkt (seed per test) oraz strona z gotowym logowaniem.</p>
-    <div class="code"><span class="tag">tests/e2e/fixtures.ts</span><pre><span class="kw">export const</span> test = base.<span class="fn">extend</span>&lt;Fixtures&gt;({
+    <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/e2e/fixtures.ts" target="_blank" rel="noopener">tests/e2e/fixtures.ts ↗</a><pre><span class="kw">export const</span> test = base.<span class="fn">extend</span>&lt;Fixtures&gt;({
   testUser: <span class="kw">async</span> ({ request }, use) =&gt; {
     <span class="kw">const</span> res = <span class="kw">await</span> request.<span class="fn">post</span>(<span class="st">"/api/test/seed-user"</span>, { data:{ email, password } });
     <span class="kw">await</span> <span class="fn">use</span>(<span class="kw">await</span> res.<span class="fn">json</span>());
@@ -386,7 +369,7 @@ svg text{font-family:var(--font)}
           <li><b>Snapshot</b> → stan DOM przed/po akcji</li>
         </ul>
       </div>
-      <div class="code" style="margin-top:0"><span class="tag">playwright.config.ts</span><pre>use: {
+      <div class="code" style="margin-top:0"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/playwright.config.ts" target="_blank" rel="noopener">playwright.config.ts ↗</a><pre>use: {
   trace: <span class="st">"on-first-retry"</span>,
   screenshot: <span class="st">"only-on-failure"</span>,
   video: <span class="st">"retain-on-failure"</span>,
@@ -408,7 +391,7 @@ svg text{font-family:var(--font)}
           <li>Artefakty: raport HTML + trace przy porażce</li>
         </ul>
       </div>
-      <div class="code" style="margin-top:0"><span class="tag">.github/workflows/tests.yml</span><pre>- <span class="kw">uses</span>: pnpm/action-setup@v4
+      <div class="code" style="margin-top:0"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/.github/workflows/tests.yml" target="_blank" rel="noopener">.github/workflows/tests.yml ↗</a><pre>- <span class="kw">uses</span>: pnpm/action-setup@v4
 - <span class="kw">uses</span>: actions/setup-node@v5
   <span class="kw">with</span>: { cache: <span class="st">pnpm</span> }
 - <span class="kw">run</span>: pnpm install --frozen-lockfile
@@ -436,6 +419,19 @@ svg text{font-family:var(--font)}
     <button class="reveal-btn" id="revealBtn">Pokaż poprawki ✨</button>
   </section>
 
+  <!-- ZŁAM I NAPRAW -->
+  <section class="slide">
+    <div class="kicker">Ćwiczenie</div>
+    <h2>Złam i napraw 🔧</h2>
+    <p class="lead">Najlepsza nauka debugowania: zepsuj → zobacz porażkę → przeczytaj trace → napraw.</p>
+    <div class="steps">
+      <div class="step"><span class="n">A</span><span><b>Zły selektor:</b> zmień nazwę przycisku w <code>shopping.spec.ts</code> → test pada na <code>click</code>; trace pokazuje „0 elementów".</span></div>
+      <div class="step"><span class="n">B</span><span><b>Rozjazd środowiska:</b> usuń <code>NODE_ENV=test</code> z e2e global-setup → fixtures dostają <span class="r">403</span> (prawdziwy bug z tego repo).</span></div>
+      <div class="step"><span class="n">C</span><span><b>Brak izolacji:</b> wyłącz <code>cleanDatabase</code> w <code>beforeEach</code> → testy padają razem (duplikat email).</span></div>
+    </div>
+    <div class="note"><span>🔌</span><span>Bez Dockera? Zrób zmianę na branchu, <code>git push</code>, obejrzyj <b>czerwone CI</b> i pobierz <b>trace z artefaktów</b>. Pełne kroki: <a href="https://github.com/ekunda/sklep-e2e/blob/main/szkolenie/PORADNIK-PROWADZACEGO.md" target="_blank" rel="noopener">PORADNIK-PROWADZACEGO.md ↗</a></span></div>
+  </section>
+
   <!-- 14b DEMO NA ŻYWO -->
   <section class="slide">
     <div class="kicker">Na żywo</div>
@@ -457,21 +453,30 @@ pnpm demo
     <div class="note"><span>🧪</span><span>To wyłącznie wygoda demonstracji. <b>Testy</b> dalej używają prawdziwego Postgresa przez <b>Testcontainers</b> — tam liczy się wierność 1:1.</span></div>
   </section>
 
-  <!-- 15 KOMENDY -->
+  <!-- DOBRZE vs ŹLE -->
   <section class="slide">
-    <div class="kicker">Ściąga</div>
-    <h2>Komendy (pnpm)</h2>
+    <div class="kicker">Jak pisać testy</div>
+    <h2><span class="r">Źle</span> vs <span class="g">dobrze</span> — przykłady</h2>
+    <p class="lead">Ten sam cel, dwa podejścia. Po prawej — tak jak w naszych testach z repo.</p>
     <div class="grid g2">
-      <div class="code" style="margin-top:0"><span class="tag">setup</span><pre><span class="cm"># aktywuj pnpm (idzie z Node)</span>
-corepack enable
-pnpm install
-pnpm exec playwright install chromium</pre></div>
-      <div class="code" style="margin-top:0"><span class="tag">testy</span><pre>pnpm test:integration   <span class="cm"># Vitest + TC</span>
-pnpm test:e2e           <span class="cm"># Playwright</span>
-pnpm test:e2e:ui        <span class="cm"># tryb UI</span>
-pnpm exec playwright show-report</pre></div>
+      <div class="code" style="margin-top:0"><span class="tag" style="color:var(--red)">❌ kruche</span><pre><span class="cm">// selektor zależny od stylów</span>
+page.<span class="fn">click</span>(<span class="st">".btn.btn-primary.mt-3"</span>);
+
+<span class="cm">// sztywny sleep — flaky</span>
+<span class="kw">await</span> page.<span class="fn">waitForTimeout</span>(<span class="nm">2000</span>);
+
+<span class="cm">// współdzielony email → duplikat</span>
+<span class="fn">seedUser</span>(pool, { email: <span class="st">"test@test.com"</span> });</pre></div>
+      <div class="code" style="margin-top:0"><span class="tag" style="color:var(--green)">✅ stabilne</span><pre><span class="cm">// selektor po roli / tekście</span>
+page.<span class="fn">getByRole</span>(<span class="st">"button"</span>, { name: <span class="st">"Dodaj do koszyka"</span> });
+
+<span class="cm">// auto-wait — czeka sam</span>
+<span class="kw">await</span> <span class="fn">expect</span>(toast).<span class="fn">toHaveText</span>(<span class="st">"Dodano…"</span>);
+
+<span class="cm">// unikalny email + czysta baza</span>
+<span class="kw">await</span> <span class="fn">seedUser</span>(pool);</pre></div>
     </div>
-    <div class="note"><span>🐳</span><span>Wymaganie: uruchomiony <b>Docker</b> (lokalnie). Brak Dockera = puść testy w CI albo użyj Testcontainers Cloud.</span></div>
+    <div class="note gn"><span>🎯</span><span>Dobry test jest <b>deterministyczny</b>: ten sam wynik niezależnie od kolejności i prędkości maszyny. Więcej par w <code>szkolenie/PORADNIK-PROWADZACEGO.md</code>.</span></div>
   </section>
 
   <!-- 16 ANTI-FLAKY -->
@@ -501,14 +506,14 @@ pnpm exec playwright show-report</pre></div>
     <h2>Materiały szkoleniowe</h2>
     <p class="lead">Wszystko jest w repozytorium — wybierz format pod swój czas.</p>
     <div class="grid g2">
-      <div class="card hl"><span class="ic">⏱️</span><h3 class="accent">Warsztat 60 minut</h3><p>Wersja prowadzona: pokaz + zrozumienie + „wow" na trace.<br><code>szkolenie/WARSZTAT-60MIN.md</code></p></div>
-      <div class="card"><span class="ic">🛠️</span><h3>Pełny hands-on (~4 h)</h3><p>7 modułów z zadaniami i checkpointami.<br><code>szkolenie/README.md</code></p></div>
+      <div class="card hl"><span class="ic">🧑‍🏫</span><h3 class="accent">Warsztat prowadzony</h3><p>Pokaz + zrozumienie + „wow" na trace.<br><a class="rl" href="https://github.com/ekunda/sklep-e2e/blob/main/szkolenie/WARSZTAT.md" target="_blank" rel="noopener">szkolenie/WARSZTAT.md ↗</a></p></div>
+      <div class="card"><span class="ic">🛠️</span><h3>Pełny hands-on</h3><p>7 modułów + poradnik prowadzącego.<br><a class="rl" href="https://github.com/ekunda/sklep-e2e/tree/main/szkolenie" target="_blank" rel="noopener">szkolenie/ ↗</a></p></div>
     </div>
     <div class="grid g2" style="margin-top:14px">
       <div class="card"><span class="ic">🛒</span><h3>Demo bez Dockera</h3><p><code>pnpm demo</code> → klikalny sklep na PGlite.</p></div>
-      <div class="card"><span class="ic">🟢</span><h3>Repo + CI</h3><p>github.com/ekunda/sklep-e2e — zielony pipeline + artefakty trace.</p></div>
+      <div class="card"><span class="ic">🟢</span><h3>Repo + CI</h3><p><a class="rl" href="https://github.com/ekunda/sklep-e2e" target="_blank" rel="noopener">github.com/ekunda/sklep-e2e ↗</a></p></div>
     </div>
-    <div class="note gn"><span>🔗</span><span>Ta prezentacja na żywo: <b>ekunda.github.io/sklep-e2e</b></span></div>
+    <div class="note gn"><span>⚙️</span><span><b>Start:</b> <code>corepack enable && pnpm install</code> · <b>testy:</b> <code>pnpm test:integration</code> / <code>pnpm test:e2e</code> · <b>na żywo:</b> ekunda.github.io/sklep-e2e</span></div>
   </section>
 
   <!-- 17 OUTRO -->
@@ -542,26 +547,29 @@ const cur=document.getElementById('cur');
 const dotsEl=document.getElementById('dots');
 document.getElementById('tot').textContent=total;
 
-const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Izolacja','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Demo na żywo','Komendy pnpm','Anti-flaky','Materiały','Podsumowanie'];
+const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Złam i napraw','Demo na żywo','Dobrze vs źle','Anti-flaky','Materiały','Podsumowanie'];
 
 // dots
 slides.forEach((_,n)=>{const d=document.createElement('i');d.onclick=()=>go(n);dotsEl.appendChild(d);});
 const dots=[...dotsEl.children];
 
-// agenda 60 minut — [czas, etykieta, docelowy slajd]
+// agenda — [etykieta, tytuł slajdu docelowego]; odporne na zmianę kolejności
 const ag=document.getElementById('agenda');
-const agenda60=[
-  ['0–4','Po co testy',3],
-  ['4–11','Demo sklepu na żywo',15],
-  ['11–23','Testcontainers + integracja',6],
-  ['23–32','Seed per test',7],
-  ['32–44','Playwright fixtures',10],
-  ['44–52','Trace — debugowanie',12],
-  ['52–58','Skalowanie + anti-flaky',13],
-  ['58–60','Podsumowanie + materiały',18],
+const agenda=[
+  ['Po co testy','Mocki vs Testcontainers'],
+  ['Demo sklepu na żywo','Demo na żywo'],
+  ['Testcontainers + integracja','Testcontainers'],
+  ['Seed per test','Seed per test'],
+  ['Playwright fixtures','Fixtures Playwright'],
+  ['Trace — debugowanie','Trace'],
+  ['Złam i napraw','Złam i napraw'],
+  ['Dobre vs złe testy','Dobrze vs źle'],
+  ['CI i skalowanie','CI / Actions'],
+  ['Materiały','Materiały'],
 ];
-agenda60.forEach(([time,label,idx])=>{const el=document.createElement('div');el.className='ag';
-  el.innerHTML=`<span class="n">${time}</span><span class="t">${label}</span>`;
+agenda.forEach(([label,title])=>{const idx=titles.indexOf(title);if(idx<0)return;
+  const el=document.createElement('div');el.className='ag';
+  el.innerHTML=`<span class="t">${label}</span>`;
   el.onclick=()=>go(idx);ag.appendChild(el);});
 
 function go(n){

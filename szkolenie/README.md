@@ -9,7 +9,7 @@ nie na slajdach.
 
 > 🎞️ Towarzysząca prezentacja na żywo: https://ekunda.github.io/sklep-e2e/
 > 🛒 Klikalne demo bez Dockera: `pnpm demo`
-> ⏱️ **Masz tylko godzinę?** → [**Warsztat 60 minut**](WARSZTAT-60MIN.md) (wersja prowadzona).
+> 🧑‍🏫 Prowadzisz szkolenie? → [**Warsztat (wersja prowadzona)**](WARSZTAT.md) + [**Poradnik prowadzącego**](PORADNIK-PROWADZACEGO.md)
 
 ---
 
@@ -44,15 +44,15 @@ bo transakcja się nie cofnęła. To szkolenie uczy testować **wiernie**.
 
 ## 2. Ścieżka nauki (7 modułów)
 
-| # | Moduł | Czas | Plik w repo |
-|---|---|---|---|
-| 1 | Po co testy E2E i integracyjne | 20 min | — |
-| 2 | Środowisko testowe z Testcontainers | 40 min | [`tests/integration/global-setup.ts`](../tests/integration/global-setup.ts) |
-| 3 | Zarządzanie danymi (seed per test) | 40 min | [`tests/helpers/seed.ts`](../tests/helpers/seed.ts) |
-| 4 | Architektura Playwright (fixtures) | 50 min | [`tests/e2e/fixtures.ts`](../tests/e2e/fixtures.ts) |
-| 5 | Debugowanie i trace | 30 min | [`playwright.config.ts`](../playwright.config.ts) |
-| 6 | Skalowanie (równoległość, CI) | 40 min | [`.github/workflows/tests.yml`](../.github/workflows/tests.yml) |
-| 7 | Dobre praktyki i antywzorce | 30 min | — |
+| # | Moduł | Plik w repo |
+|---|---|---|
+| 1 | Po co testy E2E i integracyjne | — |
+| 2 | Środowisko testowe z Testcontainers | [`tests/integration/global-setup.ts`](../tests/integration/global-setup.ts) |
+| 3 | Zarządzanie danymi (seed per test) | [`tests/helpers/seed.ts`](../tests/helpers/seed.ts) |
+| 4 | Architektura Playwright (fixtures) | [`tests/e2e/fixtures.ts`](../tests/e2e/fixtures.ts) |
+| 5 | Debugowanie i trace | [`playwright.config.ts`](../playwright.config.ts) |
+| 6 | Skalowanie (równoległość, CI) | [`.github/workflows/tests.yml`](../.github/workflows/tests.yml) |
+| 7 | Dobre praktyki i antywzorce | — |
 
 Każdy moduł ma ten sam rytm: **koncepcja po ludzku → przykład → zadanie →
 częste błędy → do zapamiętania.**
@@ -553,22 +553,21 @@ Pełne przykłady są w modułach 3–4 powyżej:
 ## 6. Wersja warsztatowa
 
 Dwa formaty do wyboru:
-- ⏱️ **[Warsztat 60 minut](WARSZTAT-60MIN.md)** — wersja prowadzona (pokaz + zrozumienie + „wow” na trace). Gdy masz godzinę.
-- 🛠️ **Pełny hands-on (≈ 4 h)** — poniżej, z zadaniami i checkpointami.
+- 🧑‍🏫 **[Warsztat — wersja prowadzona](WARSZTAT.md)** — pokaz + zrozumienie + „wow” na trace. Jak poprowadzić → [Poradnik prowadzącego](PORADNIK-PROWADZACEGO.md).
+- 🛠️ **Pełny hands-on** — poniżej, z zadaniami i checkpointami.
 
-### Pełny hands-on (≈ 4 h)
+### Pełny hands-on
 
-| Blok | Czas | Hands-on | Checkpoint ✅ |
-|---|---|---|---|
-| Start: klon + `pnpm install` + `pnpm demo` | 15 min | uruchom sklep bez Dockera | widzę sklep w przeglądarce |
-| M1 koncepcje | 20 min | wskaż test rollbacku | rozumiem mock vs TC |
-| M2 Testcontainers | 40 min | dodaj kontener MailHog | `provide/inject` działa |
-| M3 seed/fabryki | 40 min | napisz `orderFactory` | test izolowany przechodzi |
-| — przerwa — | 10 min | | |
-| M4 fixtures | 50 min | wprowadź `TestApi` + `adminPage` | E2E loguje przez API |
-| M5 trace | 30 min | zepsuj selektor, czytaj trace | znajduję błąd w trace |
-| M6 CI/skalowanie | 40 min | sharding 2→3 | zielony pipeline |
-| M7 anti-flaky | 25 min | `--repeat-each=10` | 10/10 przejść |
+| Blok | Hands-on | Checkpoint ✅ |
+|---|---|---|
+| Start: klon + `pnpm install` + `pnpm demo` | uruchom sklep bez Dockera | widzę sklep w przeglądarce |
+| M1 koncepcje | wskaż test rollbacku | rozumiem mock vs TC |
+| M2 Testcontainers | dodaj kontener MailHog | `provide/inject` działa |
+| M3 seed/fabryki | napisz `orderFactory` | test izolowany przechodzi |
+| M4 fixtures | wprowadź `TestApi` + `adminPage` | E2E loguje przez API |
+| M5 trace | zepsuj selektor, czytaj trace | znajduję błąd w trace |
+| M6 CI/skalowanie | sharding 2→3 | zielony pipeline |
+| M7 anti-flaky | `--repeat-each=10` | 10/10 przejść |
 
 **Ćwiczenia dodatkowe (dla chętnych):**
 1. Dodaj endpoint + test integracyjny „anuluj zamówienie” (status → `cancelled`).
