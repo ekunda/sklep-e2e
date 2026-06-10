@@ -8,9 +8,10 @@ z dwoma poziomami testów na **prawdziwej infrastrukturze** — bez mocków bazy
 | **Integracyjne** | Vitest + Testcontainers + supertest | API ↔ prawdziwy Postgres + Redis (bez UI) |
 | **E2E** | Playwright + Testcontainers | Pełny flow użytkownika w przeglądarce |
 
-> 🎞️ **Prezentacja:** otwórz [`../prezentacja.html`](../prezentacja.html) — interaktywny
-> deck (17 slajdów, nawigacja ←/→) prowadzący przez cały projekt: koncepcje,
-> architekturę, cykl życia testów, CI i realne bugi złapane przez pipeline.
+> 🎞️ **Prezentacja na żywo:** **https://ekunda.github.io/sklep-e2e/**
+> — interaktywny deck (18 slajdów, nawigacja ←/→) prowadzący przez cały projekt:
+> koncepcje, architekturę, transakcję zamówienia, cykl życia testów, CI i realne
+> bugi złapane przez pipeline. Źródło: [`docs/index.html`](docs/index.html).
 
 ---
 
