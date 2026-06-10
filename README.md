@@ -16,7 +16,7 @@ z dwoma poziomami testów na **prawdziwej infrastrukturze** — bez mocków bazy
 
 ## Wymagania
 
-- **Node.js ≥ 20**
+- **Node.js ≥ 22.13** (wymóg pnpm 11)
 - **pnpm ≥ 9** — aktywuj przez corepack (idzie z Node): `corepack enable`
 - **Docker** — uruchomiony silnik (Docker Desktop na Windows). Bez niego
   Testcontainers nie wystartują. Sprawdź: `docker info`.
