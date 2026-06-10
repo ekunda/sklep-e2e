@@ -29,7 +29,7 @@ test.describe("Flow zakupowy (E2E)", () => {
     // Potwierdzenie + pozycja na liście zamówień.
     await expect(page).toHaveURL(/\/orders\.html/);
     await expect(page.getByTestId("order-confirmation")).toBeVisible();
-    await expect(page.locator('[data-testid^="order-"]')).toHaveCount(1);
+    await expect(page.locator('[data-testid^="order-row-"]')).toHaveCount(1);
   });
 
   test("nowy użytkownik nie ma jeszcze zamówień", async ({ authedPage }) => {

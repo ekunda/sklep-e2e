@@ -197,7 +197,7 @@ async function initOrders() {
   for (const o of orders) {
     const row = document.createElement("div");
     row.className = "order-row";
-    row.setAttribute("data-testid", `order-${o.id}`);
+    row.setAttribute("data-testid", `order-row-${o.id}`);
     row.innerHTML = `
       <span>Zamówienie #${o.id} — <strong>${o.status}</strong></span>
       <span class="price">${o.total} zł</span>

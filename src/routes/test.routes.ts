@@ -62,6 +62,9 @@ export function testRoutes(ctx: AppContext): Router {
   }));
 
   router.delete("/cleanup-product/:id", ah(async (req, res) => {
+    // Najpierw kasujemy pozycje zamówień wskazujące na produkt (FK), potem produkt.
+    // Dzięki temu sprzątanie nie zależy od kolejności teardownu fixtures.
+    await ctx.pool.query(`DELETE FROM order_items WHERE product_id = $1`, [req.params.id]);
     await ctx.pool.query(`DELETE FROM products WHERE id = $1`, [req.params.id]);
     await invalidateProductsCache(ctx);
     res.json({ ok: true });
