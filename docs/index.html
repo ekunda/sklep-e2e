@@ -97,7 +97,7 @@ strong{color:var(--text);font-weight:700}
 .ag{display:flex;gap:14px;align-items:center;background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--rs);padding:13px 16px;cursor:pointer;transition:.18s}
 .ag:hover{border-color:var(--accent);transform:translateX(3px);background:var(--bg3)}
-.ag .n{color:var(--faint);font-family:var(--mono);font-weight:700;font-size:13px;min-width:22px}
+.ag .n{color:var(--accent2);font-family:var(--mono);font-weight:700;font-size:13px;min-width:46px}
 .ag .t{font-weight:600;font-size:15px}
 
 /* callout */
@@ -160,7 +160,7 @@ svg text{font-family:var(--font)}
 <body>
 <div class="progress" id="prog"></div>
 <div class="brand"><span class="logo">🛒</span> Sklep E2E</div>
-<div class="counter"><b id="cur">1</b> / <span id="tot">19</span></div>
+<div class="counter"><b id="cur">1</b> / <span id="tot">20</span></div>
 
 <div class="deck" id="deck">
 
@@ -170,6 +170,7 @@ svg text{font-family:var(--font)}
     <h1>Testcontainers + Playwright<br><span class="grad">na prawdziwej infrastrukturze</span></h1>
     <p class="lead">Testy integracyjne i E2E dla małego sklepu — z prawdziwym PostgreSQL i Redis w kontenerach, fixturami z seedem per test, artefaktami trace i zielonym CI. Od zera do działającego pipeline'u.</p>
     <div class="chips">
+      <span class="chip"><span class="dot" style="background:var(--cyan)"></span>~60 min · warsztat</span>
       <span class="chip"><span class="dot" style="background:var(--green)"></span>Vitest</span>
       <span class="chip"><span class="dot" style="background:var(--blue)"></span>Testcontainers</span>
       <span class="chip"><span class="dot" style="background:var(--pink)"></span>Playwright</span>
@@ -181,9 +182,9 @@ svg text{font-family:var(--font)}
 
   <!-- 2 AGENDA -->
   <section class="slide">
-    <div class="kicker">Plan</div>
-    <h2>Co dziś przejdziemy</h2>
-    <p class="lead">Kliknij temat, żeby do niego przeskoczyć.</p>
+    <div class="kicker">Plan na 60 minut</div>
+    <h2>Agenda warsztatu</h2>
+    <p class="lead">Kliknij blok, żeby do niego przeskoczyć. Łącznie ~60 minut — wersja prowadzona (pokaz + zrozumienie).</p>
     <div class="agenda" id="agenda"></div>
   </section>
 
@@ -494,6 +495,22 @@ pnpm exec playwright show-report</pre></div>
     <div class="note gn"><span>🎯</span><span>Lepiej mieć <b>5 stabilnych</b> testów niż 50 flaky.</span></div>
   </section>
 
+  <!-- 16c MATERIAŁY -->
+  <section class="slide">
+    <div class="kicker">Jak uczyć się dalej</div>
+    <h2>Materiały szkoleniowe</h2>
+    <p class="lead">Wszystko jest w repozytorium — wybierz format pod swój czas.</p>
+    <div class="grid g2">
+      <div class="card hl"><span class="ic">⏱️</span><h3 class="accent">Warsztat 60 minut</h3><p>Wersja prowadzona: pokaz + zrozumienie + „wow" na trace.<br><code>szkolenie/WARSZTAT-60MIN.md</code></p></div>
+      <div class="card"><span class="ic">🛠️</span><h3>Pełny hands-on (~4 h)</h3><p>7 modułów z zadaniami i checkpointami.<br><code>szkolenie/README.md</code></p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><span class="ic">🛒</span><h3>Demo bez Dockera</h3><p><code>pnpm demo</code> → klikalny sklep na PGlite.</p></div>
+      <div class="card"><span class="ic">🟢</span><h3>Repo + CI</h3><p>github.com/ekunda/sklep-e2e — zielony pipeline + artefakty trace.</p></div>
+    </div>
+    <div class="note gn"><span>🔗</span><span>Ta prezentacja na żywo: <b>ekunda.github.io/sklep-e2e</b></span></div>
+  </section>
+
   <!-- 17 OUTRO -->
   <section class="slide">
     <div class="kicker">Podsumowanie</div>
@@ -525,17 +542,27 @@ const cur=document.getElementById('cur');
 const dotsEl=document.getElementById('dots');
 document.getElementById('tot').textContent=total;
 
-const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Izolacja','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Demo na żywo','Komendy pnpm','Anti-flaky','Podsumowanie'];
+const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Izolacja','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Demo na żywo','Komendy pnpm','Anti-flaky','Materiały','Podsumowanie'];
 
 // dots
 slides.forEach((_,n)=>{const d=document.createElement('i');d.onclick=()=>go(n);dotsEl.appendChild(d);});
 const dots=[...dotsEl.children];
 
-// agenda (skip 0 and 1)
+// agenda 60 minut — [czas, etykieta, docelowy slajd]
 const ag=document.getElementById('agenda');
-titles.forEach((t,n)=>{if(n<2)return;const el=document.createElement('div');el.className='ag';
-  el.innerHTML=`<span class="n">${String(n-1).padStart(2,'0')}</span><span class="t">${t}</span>`;
-  el.onclick=()=>go(n);ag.appendChild(el);});
+const agenda60=[
+  ['0–4','Po co testy',3],
+  ['4–11','Demo sklepu na żywo',15],
+  ['11–23','Testcontainers + integracja',6],
+  ['23–32','Seed per test',7],
+  ['32–44','Playwright fixtures',10],
+  ['44–52','Trace — debugowanie',12],
+  ['52–58','Skalowanie + anti-flaky',13],
+  ['58–60','Podsumowanie + materiały',18],
+];
+agenda60.forEach(([time,label,idx])=>{const el=document.createElement('div');el.className='ag';
+  el.innerHTML=`<span class="n">${time}</span><span class="t">${label}</span>`;
+  el.onclick=()=>go(idx);ag.appendChild(el);});
 
 function go(n){
   i=Math.max(0,Math.min(total-1,n));
