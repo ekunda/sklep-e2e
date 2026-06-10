@@ -1,0 +1,11 @@
+# pnpm 11 wymaga jawnej decyzji dla każdego pakietu ze skryptem build/postinstall
+# (ochrona przed złośliwymi postinstall). Ustawiamy false — żadna z tych binarek
+# nie wymaga kompilacji natywnej do działania:
+#  - esbuild (tsx/vitest) ma gotową binarkę w pakiecie platformowym,
+#  - ssh2 / cpu-features / protobufjs to opcjonalne dodatki testcontainers.
+# Przeglądarki Playwright instalujemy osobno: `pnpm exec playwright install`.
+allowBuilds:
+  cpu-features: false
+  esbuild: false
+  protobufjs: false
+  ssh2: false

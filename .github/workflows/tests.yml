@@ -13,16 +13,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # pnpm musi być przed setup-node, żeby zadziałał cache: "pnpm".
+      # Wersja pnpm jest brana z pola "packageManager" w package.json.
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v5
         with:
           node-version: "20"
-          cache: "npm"
+          cache: "pnpm"
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       # Docker jest preinstalowany na ubuntu-latest — Testcontainers działają od ręki.
       - name: Testy integracyjne
-        run: npm run test:integration
+        run: pnpm test:integration
 
   # Job 2: testy E2E (Playwright). Sharding rozkłada testy na 2 maszyny.
   e2e:
@@ -35,18 +39,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v5
         with:
           node-version: "20"
-          cache: "npm"
+          cache: "pnpm"
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Instalacja przeglądarek Playwright
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Testy E2E (shard ${{ matrix.shard }}/2)
-        run: npx playwright test --shard=${{ matrix.shard }}/2
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}/2
         env:
           CI: "true"
 
