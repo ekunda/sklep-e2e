@@ -1,0 +1,17 @@
+node_modules/
+.env
+
+# Artefakty testów
+playwright-report/
+test-results/
+blob-report/
+traces/
+tests/e2e/.auth/
+
+# Logi
+*.log
+npm-debug.log*
+
+# System
+.DS_Store
+Thumbs.db

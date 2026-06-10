@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sklep — Koszyk</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body data-page="cart">
+  <header>
+    <a class="brand" href="/products.html">Sklep E2E</a>
+    <nav>
+      <a href="/products.html">Produkty</a>
+      <a href="/cart.html">Koszyk <span class="badge" data-testid="cart-badge">0</span></a>
+      <a href="/orders.html">Zamówienia</a>
+      <button class="secondary" type="button" data-testid="logout">Wyloguj</button>
+    </nav>
+  </header>
+  <main>
+    <h1>Twój koszyk</h1>
+    <div id="cart-list"></div>
+    <div id="cart-summary">
+      <p>Razem: <strong data-testid="cart-total">0.00</strong> zł</p>
+      <button type="button" data-testid="place-order">Złóż zamówienie</button>
+    </div>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

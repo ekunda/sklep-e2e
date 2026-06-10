@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sklep — Produkty</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body data-page="products">
+  <header>
+    <a class="brand" href="/products.html">Sklep E2E</a>
+    <nav>
+      <a href="/products.html">Produkty</a>
+      <a href="/cart.html">Koszyk <span class="badge" data-testid="cart-badge">0</span></a>
+      <a href="/orders.html">Zamówienia</a>
+      <button class="secondary" type="button" data-testid="logout">Wyloguj</button>
+    </nav>
+  </header>
+  <main>
+    <h1>Produkty</h1>
+    <div id="product-grid" class="product-grid"></div>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
