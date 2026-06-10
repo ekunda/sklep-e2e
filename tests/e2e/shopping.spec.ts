@@ -13,8 +13,8 @@ test.describe("Flow zakupowy (E2E)", () => {
     const card = page.getByTestId(`product-${testProduct.id}`);
     await expect(card).toBeVisible();
 
-    // Dodaj do koszyka.
-    await card.getByRole("button", { name: "Dodaj do koszyka" }).click();
+    // Kup teraz.
+    await card.getByRole("button", { name: "Kup teraz" }).click();
     await expect(page.getByTestId("toast")).toHaveText("Dodano do koszyka");
     await expect(page.getByTestId("cart-badge")).toHaveText("1");
 
@@ -48,8 +48,8 @@ test.describe("Flow zakupowy (E2E)", () => {
     const card = authedPage.getByTestId(`product-${product.id}`);
 
     // Dodaj dwa razy (2 szt.), choć na stanie jest 1.
-    await card.getByRole("button", { name: "Dodaj do koszyka" }).click();
-    await card.getByRole("button", { name: "Dodaj do koszyka" }).click();
+    await card.getByRole("button", { name: "Kup teraz" }).click();
+    await card.getByRole("button", { name: "Kup teraz" }).click();
     await expect(authedPage.getByTestId("cart-badge")).toHaveText("2");
 
     await authedPage.getByRole("link", { name: "Koszyk" }).click();
