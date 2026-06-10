@@ -25,7 +25,6 @@ async function globalSetup() {
   // Serwer testowy musi działać w trybie test — to włącza strażnika tras
   // /api/test/* (który czyta process.env.NODE_ENV). Vitest ustawia to sam,
   // Playwright NIE — dlatego ustawiamy jawnie, tak jak `NODE_ENV=test node ...`.
-  process.env.NODE_ENV = "test";
 
   console.log("[e2e] startuję kontenery (Postgres + Redis)...");
   const [pgContainer, redisContainer] = await Promise.all([
