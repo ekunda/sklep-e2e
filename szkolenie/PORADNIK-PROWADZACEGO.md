@@ -163,12 +163,17 @@ Najlepsza nauka debugowania. Rób **na żywo** lub jako zadanie. Każdy scenariu
 
 ### Scenariusz A — zły selektor (klasyk)
 - **Zepsuj:** w [`tests/e2e/shopping.spec.ts`](../tests/e2e/shopping.spec.ts) zmień
-  `{ name: "Dodaj do koszyka" }` na `{ name: "Do koszyka" }`.
-- **Zobaczysz:** test wisi do timeoutu i pada na `click()`.
+  `{ name: "Dodaj do koszyka" }` na `{ name: "Kup teraz" }` (taki przycisk nie istnieje).
+- **Zobaczysz:** test wisi do timeoutu i pada na `click()` (w CI: po 3 próbach).
 - **Diagnoza (trace):** czerwona akcja `click`; w **Log**: „locator resolved to 0 elements”;
-  **snapshot** strony pokazuje przycisk z inną nazwą.
+  **snapshot** strony pokazuje, że takiego przycisku nie ma.
 - **Napraw:** przywróć poprawną nazwę.
 - **Uczy:** test pada *gdzie* (akcja) i *dlaczego* (0 elementów = zła nazwa, nie „wolna strona”).
+- **⚠️ Pułapka, którą sami złapaliśmy:** `getByRole(name)` dopasowuje **fragment**
+  tekstu. Literówka typu „Do koszyka” *wciąż pasuje* do „Dodaj do koszyka” i test
+  **by przeszedł**! Żeby na pewno zepsuć — użyj nazwy, której w tekście nie ma
+  (albo dopasowania ścisłego: `{ name: "...", exact: true }`). To gotowa gałąź
+  `broken/selector`.
 
 ### Scenariusz B — rozjazd środowiska (prawdziwy bug z tego repo)
 - **Zepsuj:** w [`tests/e2e/global-setup.ts`](../tests/e2e/global-setup.ts) usuń linię

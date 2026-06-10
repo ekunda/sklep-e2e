@@ -36,7 +36,7 @@ pnpm exec playwright show-trace <trace.zip>
 ### Złam i napraw (na żywo)
 | # | Co zepsuć | Objaw |
 |---|---|---|
-| A | nazwa przycisku w `shopping.spec.ts` | test pada na `click`; trace: „0 elementów” |
+| A | przycisk na nieistniejącą nazwę (np. „Kup teraz”) w `shopping.spec.ts` | `click` timeout; trace: „0 elementów” |
 | B | usuń `NODE_ENV=test` w e2e `global-setup.ts` | fixtures → **403** (seed-user) |
 | C | wyłącz `cleanDatabase` w `beforeEach` | testy padają razem (duplikat email) |
 
