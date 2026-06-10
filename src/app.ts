@@ -12,11 +12,17 @@ import { testRoutes } from "./routes/test.routes.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface CreateAppConfig {
-  databaseUrl: string;
-  redisUrl: string;
+  /** Wymagane, chyba że podasz gotowy `pool` (np. PGlite w trybie demo). */
+  databaseUrl?: string;
+  /** Wymagane, chyba że podasz gotowy `redis` (np. cache w pamięci). */
+  redisUrl?: string;
   jwtSecret: string;
   /** Gdy 'test', montowane są trasy /api/test/* (seed, cleanup). */
   nodeEnv?: string;
+  /** Gotowa instancja puli (pomija tworzenie z databaseUrl). */
+  pool?: Pool;
+  /** Gotowa instancja Redisa (pomija tworzenie z redisUrl). */
+  redis?: RedisClientType;
 }
 
 export interface CreatedApp {
@@ -35,8 +41,9 @@ export interface CreatedApp {
  * przychodzi z zewnątrz. Dzięki temu test podaje URL-e z Testcontainers.
  */
 export async function createApp(config: CreateAppConfig): Promise<CreatedApp> {
-  const pool = createPool(config.databaseUrl);
-  const redis = await createRedis(config.redisUrl);
+  // Użyj wstrzykniętych instancji (tryb demo) albo zbuduj z URL-i (test/dev/prod).
+  const pool = config.pool ?? createPool(config.databaseUrl!);
+  const redis = config.redis ?? (await createRedis(config.redisUrl!));
 
   const ctx: AppContext = { pool, redis, jwtSecret: config.jwtSecret };
 

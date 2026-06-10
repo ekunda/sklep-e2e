@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
+    "demo": "tsx src/demo-server.ts",
     "typecheck": "tsc --noEmit",
     "test:integration": "vitest run",
     "test:integration:watch": "vitest",
@@ -21,6 +22,7 @@
     "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.5.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",

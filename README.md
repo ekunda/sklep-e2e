@@ -15,6 +15,31 @@ z dwoma poziomami testów na **prawdziwej infrastrukturze** — bez mocków bazy
 
 ---
 
+## 🚀 Demo na żywo (bez Dockera)
+
+Chcesz pokazać sklep w akcji na prezentacji, ale nie masz Dockera? Tryb demo
+uruchamia **tę samą aplikację** na [PGlite](https://pglite.dev) (PostgreSQL
+skompilowany do WebAssembly, działa w procesie Node) i cache'u w pamięci —
+**zero kontenerów**:
+
+```bash
+corepack enable
+pnpm install
+pnpm demo
+# ➜ http://localhost:3000/login.html
+# login: demo@sklep.pl / hasło: demo1234
+```
+
+Klikaj na żywo: logowanie → produkty → koszyk → zamówienie (spadek stanu),
+a przy zamówieniu ponad stan zobaczysz **ROLLBACK** (HTTP 400). Baza jest świeża
+przy każdym starcie. Implementacja: [`src/demo-server.ts`](src/demo-server.ts),
+[`src/demo-db.ts`](src/demo-db.ts).
+
+> ⚠️ Demo to **wyłącznie wygoda prezentacji**. Testy integracyjne i E2E dalej
+> używają prawdziwego Postgresa przez Testcontainers — tam liczy się wierność 1:1.
+
+---
+
 ## Wymagania
 
 - **Node.js ≥ 22.13** (wymóg pnpm 11)

@@ -160,7 +160,7 @@ svg text{font-family:var(--font)}
 <body>
 <div class="progress" id="prog"></div>
 <div class="brand"><span class="logo">🛒</span> Sklep E2E</div>
-<div class="counter"><b id="cur">1</b> / <span id="tot">18</span></div>
+<div class="counter"><b id="cur">1</b> / <span id="tot">19</span></div>
 
 <div class="deck" id="deck">
 
@@ -435,6 +435,27 @@ svg text{font-family:var(--font)}
     <button class="reveal-btn" id="revealBtn">Pokaż poprawki ✨</button>
   </section>
 
+  <!-- 14b DEMO NA ŻYWO -->
+  <section class="slide">
+    <div class="kicker">Na żywo</div>
+    <h2>Pokaż sklep w akcji — <span class="accent">bez Dockera</span></h2>
+    <p class="lead">Tryb demo uruchamia tę samą aplikację na <strong>PGlite</strong> (PostgreSQL w WebAssembly) i cache'u w pamięci. Zero kontenerów — idealne na prezentację z laptopa.</p>
+    <div class="grid g2">
+      <div class="code" style="margin-top:0"><span class="tag">terminal</span><pre>corepack enable
+pnpm install
+pnpm demo
+<span class="cm"># ➜ http://localhost:3000/login.html</span>
+<span class="cm"># login: demo@sklep.pl / demo1234</span></pre></div>
+      <ul class="bul">
+        <li>Zaloguj się i przejdź <b>produkty → koszyk</b></li>
+        <li>Złóż zamówienie — zobacz <b>spadek stanu</b></li>
+        <li>Zamów ponad stan → <b>ROLLBACK</b> (HTTP 400)</li>
+        <li>Drugie wejście na listę → odpowiedź <b>z cache</b></li>
+      </ul>
+    </div>
+    <div class="note"><span>🧪</span><span>To wyłącznie wygoda demonstracji. <b>Testy</b> dalej używają prawdziwego Postgresa przez <b>Testcontainers</b> — tam liczy się wierność 1:1.</span></div>
+  </section>
+
   <!-- 15 KOMENDY -->
   <section class="slide">
     <div class="kicker">Ściąga</div>
@@ -504,7 +525,7 @@ const cur=document.getElementById('cur');
 const dotsEl=document.getElementById('dots');
 document.getElementById('tot').textContent=total;
 
-const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Izolacja','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Komendy pnpm','Anti-flaky','Podsumowanie'];
+const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Izolacja','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Demo na żywo','Komendy pnpm','Anti-flaky','Podsumowanie'];
 
 // dots
 slides.forEach((_,n)=>{const d=document.createElement('i');d.onclick=()=>go(n);dotsEl.appendChild(d);});
