@@ -14,13 +14,15 @@ omówienie → [`README.md`](README.md). Jak to dobrze poprowadzić →
 ```bash
 corepack enable && pnpm install
 pnpm exec playwright install chromium
-# jeśli masz Docker — rozgrzej obrazy:
+# jeśli masz silnik kontenerów — rozgrzej obrazy:
 docker pull postgres:16 && docker pull redis:7
 ```
 Miej otwarte: repo w edytorze, terminal, przeglądarkę (`pnpm demo`), zakładkę
 GitHub Actions (zielony przebieg) i jeden gotowy `trace.zip`.
 
-> **Bez Dockera?** Używasz `pnpm demo`, zielonego CI i trace z artefaktów —
+> **Bez Docker Desktop?** Darmowy zamiennik: **Rancher Desktop** (drop-in) lub
+> **Podman** → [`DOCKER-ALTERNATYWY.md`](DOCKER-ALTERNATYWY.md).
+> **Bez żadnego silnika?** Używasz `pnpm demo`, zielonego CI i trace z artefaktów —
 > cała ścieżka przejdzie.
 
 ---

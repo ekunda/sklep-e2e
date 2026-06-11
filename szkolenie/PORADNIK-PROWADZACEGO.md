@@ -24,10 +24,15 @@ Trzy zasady:
 corepack enable
 pnpm install
 pnpm exec playwright install chromium
-# jeśli masz Docker — rozgrzej obrazy, żeby pierwszy test nie czekał na pobieranie:
+# jeśli masz silnik kontenerów — rozgrzej obrazy, żeby pierwszy test nie czekał na pobieranie:
 docker pull postgres:16
 docker pull redis:7
 ```
+
+> 🆓 **Nie masz licencji Docker Desktop?** Testcontainers potrzebuje tylko Docker
+> API — darmowy **Rancher Desktop** działa bez żadnej konfiguracji, **Podman**
+> po ustawieniu dwóch zmiennych. Instrukcje →
+> [`DOCKER-ALTERNATYWY.md`](DOCKER-ALTERNATYWY.md).
 
 Miej otwarte i przygotowane:
 - **edytor** z repo (zakładki: `tests/e2e/fixtures.ts`, `tests/integration/orders.test.ts`, `tests/helpers/seed.ts`, `playwright.config.ts`),
@@ -35,8 +40,8 @@ Miej otwarte i przygotowane:
 - **przeglądarkę** z `pnpm demo` (sklep) i drugą zakładką z **GitHub Actions** (zielony przebieg),
 - jeden gotowy **`trace.zip`** z nieudanego testu (na wypadek braku czasu/Dockera).
 
-### 🔌 Plan B: nie masz Dockera
-Cała sesja przejdzie bez Dockera, jeśli:
+### 🔌 Plan B: nie masz żadnego silnika kontenerów
+Cała sesja przejdzie bez kontenerów, jeśli:
 - zamiast `pnpm test:*` pokazujesz **`pnpm demo`** (działa lokalnie na PGlite),
 - testy pokazujesz jako **zielone CI** w Actions,
 - trace otwierasz z **artefaktów** pobranych z nieudanego przebiegu CI.
@@ -237,7 +242,8 @@ Powtórz 10× (`--repeat-each=10`), otwórz trace nieudanego, sprawdź czy to ra
 
 | Objaw | Co zrobić |
 |---|---|
-| `docker info` błąd / brak Dockera | przejdź na Plan B (demo + CI + trace z artefaktów) |
+| firma bez licencji Docker Desktop | darmowy Rancher Desktop / Podman → [`DOCKER-ALTERNATYWY.md`](DOCKER-ALTERNATYWY.md) |
+| `docker info` błąd / żaden silnik nie działa | przejdź na Plan B (demo + CI + trace z artefaktów) |
 | pierwszy test długo wisi | to pobieranie obrazu — rozgrzej `docker pull` przed sesją |
 | port 3000 zajęty | `pnpm demo` z innym portem: `PORT=3010 pnpm demo` |
 | brak przeglądarki Playwright | `pnpm exec playwright install chromium` |

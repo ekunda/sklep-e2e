@@ -9,8 +9,9 @@ z dwoma poziomami testów na **prawdziwej infrastrukturze** — bez mocków bazy
 | **E2E** | Playwright + Testcontainers | Pełny flow użytkownika w przeglądarce |
 
 > 🎞️ **Prezentacja na żywo:** **https://ekunda.github.io/sklep-e2e/**
-> — interaktywny deck (18 slajdów, nawigacja ←/→) prowadzący przez cały projekt:
-> koncepcje, architekturę, transakcję zamówienia, cykl życia testów, CI i realne
+> — interaktywny deck (25 slajdów, nawigacja ←/→) prowadzący przez cały projekt:
+> teoria 🧠 przeplatana praktyką 🛠️ i klikanymi quizami 🎮 — koncepcje, architektura,
+> transakcja zamówienia, darmowe silniki kontenerów, cykl życia testów, CI i realne
 > bugi złapane przez pipeline. Źródło: [`docs/index.html`](docs/index.html).
 
 > 📚 **Pełny program szkoleniowy** (7 modułów, refaktoryzacja, wersja warsztatowa,
@@ -47,10 +48,13 @@ przy każdym starcie. Implementacja: [`src/demo-server.ts`](src/demo-server.ts),
 
 - **Node.js ≥ 22.13** (wymóg pnpm 11)
 - **pnpm ≥ 9** — aktywuj przez corepack (idzie z Node): `corepack enable`
-- **Docker** — uruchomiony silnik (Docker Desktop na Windows). Bez niego
-  Testcontainers nie wystartują. Sprawdź: `docker info`.
+- **Silnik kontenerów** — uruchomiony silnik zgodny z Docker API. Może to być
+  Docker Desktop **albo darmowa alternatywa**: Rancher Desktop (drop-in, zero
+  konfiguracji) lub Podman — patrz
+  [`szkolenie/DOCKER-ALTERNATYWY.md`](szkolenie/DOCKER-ALTERNATYWY.md).
+  Sprawdź: `docker info`.
 
-> Brak działającego Dockera lokalnie? Wypchnij na GitHub — **CI ma Dockera
+> Żaden silnik nie działa lokalnie? Wypchnij na GitHub — **CI ma Dockera
 > preinstalowanego** ([`.github/workflows/tests.yml`](.github/workflows/tests.yml)),
 > albo użyj Testcontainers Cloud.
 

@@ -44,5 +44,6 @@ pnpm exec playwright show-trace <trace.zip>
 - `broken/selector` — scenariusz A
 - `broken/node-env` — scenariusz B
 
-> Bez Dockera? Pokaż `pnpm demo`, zielone CI w Actions i trace z artefaktów.
+> Bez Docker Desktop? Darmowe: **Rancher Desktop** (drop-in) / **Podman** → `DOCKER-ALTERNATYWY.md`.
+> Bez żadnego silnika? Pokaż `pnpm demo`, zielone CI w Actions i trace z artefaktów.
 > Zasada: **pokaż, nie opowiadaj**; jeden „wow” = trace.

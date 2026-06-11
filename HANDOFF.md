@@ -61,6 +61,7 @@ szkolenie/                # PROGRAM SZKOLENIOWY
   WARSZTAT.md             # wersja prowadzona (skrót)
   PORADNIK-PROWADZACEGO.md# jak prowadzić, dobre/złe testy, „złam i napraw”, pytania
   KARTA-PROWADZACEGO.md   # 1 strona A4 do druku
+  DOCKER-ALTERNATYWY.md   # darmowe silniki kontenerów (Rancher Desktop / Podman) + Plan B
 docs/index.html           # interaktywna prezentacja (serwowana przez GitHub Pages)
 tools/export-pdf.mjs      # generowanie PDF prezentacji
 .github/workflows/tests.yml # CI: integracja + E2E (sharding ×2) na pnpm

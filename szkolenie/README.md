@@ -13,6 +13,21 @@ nie na slajdach.
 
 ---
 
+## 🚦 Start w 3 minuty — wybierz swoją ścieżkę
+
+```bash
+corepack enable && pnpm install
+pnpm exec playwright install chromium
+```
+
+| Masz... | Twoja ścieżka |
+|---|---|
+| 🐳 Dockera (lub 🐮 Rancher / 🦭 Podman) | pełny hands-on: `pnpm demo` + `pnpm test:integration` + `pnpm test:e2e` |
+| 🏢 firmę bez licencji Docker Desktop | darmowy silnik (5 min setupu) → [**DOCKER-ALTERNATYWY.md**](DOCKER-ALTERNATYWY.md) |
+| 💻 tylko Node, zero kontenerów | `pnpm demo` + czytanie kodu + zielone CI — przejdziesz ~80% materiału |
+
+---
+
 ## 1. Wprowadzenie do szkolenia
 
 ### Dla kogo
@@ -23,8 +38,10 @@ z prawdziwą bazą, a nie z mockami, które „udają”.
 ### Wymagania wstępne
 - Podstawy **TypeScript** (typy, async/await, generyki w stopniu „czytam ze zrozumieniem”).
 - Podstawy **SQL** (SELECT/INSERT/UPDATE).
-- Zainstalowane: **Node 22.13+**, **pnpm** (`corepack enable`), **Docker** (do testów).
-  Bez Dockera przejdziesz 80% materiału przez `pnpm demo` i CI.
+- Zainstalowane: **Node 22.13+**, **pnpm** (`corepack enable`) i **silnik kontenerów**
+  (do testów): Docker **albo darmowy Rancher Desktop / Podman** —
+  patrz [DOCKER-ALTERNATYWY.md](DOCKER-ALTERNATYWY.md).
+  Bez żadnego silnika przejdziesz 80% materiału przez `pnpm demo` i CI.
 
 ### Czego się nauczysz
 - Kiedy pisać test **jednostkowy**, **integracyjny**, a kiedy **E2E**.
@@ -43,6 +60,14 @@ bo transakcja się nie cofnęła. To szkolenie uczy testować **wiernie**.
 ---
 
 ## 2. Ścieżka nauki (7 modułów)
+
+```mermaid
+flowchart LR
+    M1["1️⃣ Po co testy"] --> M2["2️⃣ Testcontainers"] --> M3["3️⃣ Seed per test"]
+    M3 --> M4["4️⃣ Fixtures"] --> M5["5️⃣ Trace 🔍<br>(moment „wow”)"]
+    M5 --> M6["6️⃣ Równoległość + CI"] --> M7["7️⃣ Anti-flaky"]
+    style M5 stroke-width:3px
+```
 
 | # | Moduł | Plik w repo |
 |---|---|---|
@@ -89,6 +114,22 @@ bazy byłby w stanie to udowodnić? (Nie — bo to zachowanie *prawdziwego* Post
 ### 🧠 Do zapamiętania
 > Mock sprawdza **rozmowę**. Testcontainers sprawdza **rezultat**. Do bazy i cache —
 > używaj prawdziwych usług w kontenerach.
+
+### ✅ Sprawdź się
+<details>
+<summary>Test sprawdza, że <code>sendEmail()</code> zostało wywołane z dobrymi argumentami. Rozmowa czy rezultat?</summary>
+
+**Rozmowa** — to mock. Nie wiesz, czy mail naprawdę by wyszedł; wiesz tylko, że
+funkcja została zawołana. Dla *zewnętrznej* usługi (mailing) to OK — dla własnej
+bazy już nie.
+</details>
+
+<details>
+<summary>Test rollbacku transakcji — jednostkowy, integracyjny czy E2E? Dlaczego?</summary>
+
+**Integracyjny.** Rollback to zachowanie *prawdziwego* Postgresa — mock bazy
+„cofnie” transakcję tylko dlatego, że tak go zaprogramowałeś, więc niczego nie dowodzi.
+</details>
 
 ---
 
@@ -147,6 +188,21 @@ jego URL. Cel: ćwiczysz `GenericContainer` + `withExposedPorts`.
 ### 🧠 Do zapamiętania
 > Kontener startuj **raz**, dane czyść **przed każdym testem**. W Vitest przekazuj
 > connection stringi przez `provide`/`inject`, nie przez `process.env`.
+
+### ✅ Sprawdź się
+<details>
+<summary>Czemu <code>process.env.DATABASE_URL = ...</code> w global-setup nie działa w testach?</summary>
+
+Workery Vitest to **osobne procesy** — nie dziedziczą zmian w `process.env`
+zrobionych w setupie. Kanałem jest `provide()` (setup) → `inject()` (test).
+</details>
+
+<details>
+<summary>Pierwszy test wisi 60 sekund i pada na timeout. Co się najpewniej dzieje?</summary>
+
+Silnik **pobiera obraz** (postgres:16) przy pierwszym starcie. Rozgrzej obrazy
+przed sesją (`docker pull`) i ustaw `hookTimeout: 120_000`.
+</details>
 
 ---
 
@@ -232,6 +288,21 @@ i listą `{ productId, quantity }`. Zwróć `orderId` i `total`.
 
 ### 🧠 Do zapamiętania
 > Każdy test: **arrange (seed) → act → assert**, na **czystej** bazie. Nie zakładaj `id = 1`.
+
+### ✅ Sprawdź się
+<details>
+<summary>Test A i test B używają <code>email: "test@test.com"</code>. Pojedynczo przechodzą, razem padają. Czemu?</summary>
+
+Drugi `INSERT` łamie **UNIQUE** na emailu — dane z testu A „przeciekły” do B.
+Lekarstwo: czysta baza w `beforeEach` + unikalne dane z seedera.
+</details>
+
+<details>
+<summary>Co robi <code>TRUNCATE ... RESTART IDENTITY CASCADE</code> i czemu nie zwykły <code>DELETE</code>?</summary>
+
+`TRUNCATE` jest szybszy od `DELETE`, `RESTART IDENTITY` zeruje sekwencje id,
+`CASCADE` czyści też tabele powiązane kluczami obcymi — jedna komenda, czysty stan.
+</details>
 
 ---
 
@@ -334,6 +405,21 @@ Przerób `fixtures.ts` tak, by używał `TestApi`. Dodaj fixture `adminPage`
 > Setup, który powtarzasz → przenieś do **fixture**. Loguj przez **API**. Sprzątaj
 > w **teardownie**. Stringi do API zamknij w **typowanym kliencie**.
 
+### ✅ Sprawdź się
+<details>
+<summary>50 testów loguje się przez formularz UI. Ile czasu tracisz i co z tym zrobić?</summary>
+
+~2-3 s × 50 = **dwie minuty** na sam login. Loguj przez API (token do
+`localStorage` w fixture `authedPage`) — formularz logowania testujesz **raz**, osobnym testem.
+</details>
+
+<details>
+<summary>W którym miejscu fixture wykonuje się teardown (sprzątanie)?</summary>
+
+Wszystko **po `await use(...)`** — to odpowiednik `afterEach`, ale trzymany razem
+z setupem. Brak teardownu = dane zostają = flaky.
+</details>
+
 ---
 
 ## Moduł 5 — Debugowanie i trace artifacts
@@ -383,6 +469,21 @@ i przejdź ścieżkę „czerwona akcja → Network → Console”. Napraw.
 ### 🧠 Do zapamiętania
 > W CI: `retries: 2` + `trace: "on-first-retry"`. Test pada → masz czarną skrzynkę.
 > Test przechodzi po retry → masz kandydata na flaky do zbadania.
+
+### ✅ Sprawdź się
+<details>
+<summary>Test padł na kliknięciu, w zakładce Network widzisz <code>500</code> na <code>/api/orders</code>. Wina UI czy backendu?</summary>
+
+**Backendu** — UI nie miał czego wyrenderować. Bez trace'a debugowałbyś selektory;
+z trace'em od razu wiesz, że trzeba patrzeć w API.
+</details>
+
+<details>
+<summary>W Logu czerwonej akcji: „locator resolved to 0 elements". Co to znaczy?</summary>
+
+Element **nie istnieje** (zły selektor / inna nazwa przycisku) — to nie „wolna
+strona". Timeout z 0 elementów = szukaj literówki, nie zwiększaj timeoutu.
+</details>
 
 ---
 
@@ -444,6 +545,21 @@ liczba testów się zgadza.
 > Równoległość bez izolacji = flaky. Najpierw **izoluj dane** (czysta baza /
 > unikalne dane / kontener per worker), potem **zwiększaj workery i shardy**.
 
+### ✅ Sprawdź się
+<details>
+<summary>Czemu w tym repo testy integracyjne mają <code>fileParallelism: false</code>?</summary>
+
+Wszystkie pliki dzielą **jeden** kontener — gdyby biegły równolegle, `TRUNCATE`
+z jednego pliku kasowałby dane testu z drugiego. Chcesz równoległości? Kontener per worker.
+</details>
+
+<details>
+<summary>Po włączeniu <code>fullyParallel</code> testy padają „losowo". Pierwsze podejrzenie?</summary>
+
+**Współdzielone dane** bez izolacji — dwa testy depczą sobie po stanie. Równoległość
+nie psuje testów, tylko **ujawnia** brak izolacji.
+</details>
+
 ---
 
 ## Moduł 7 — Dobre praktyki i antywzorce
@@ -475,6 +591,21 @@ await page.route("**/api.kursy.example/**", (route) =>
 ### 🧠 Do zapamiętania
 > Stabilny test to **deterministyczny** test: auto-wait, izolacja danych,
 > mock tylko tego, czego nie kontrolujesz.
+
+### ✅ Sprawdź się
+<details>
+<summary>Co jest nie tak z <code>expect(await locator.textContent()).toBe("OK")</code>?</summary>
+
+Odczyt jest **natychmiastowy** — brak auto-wait. Na wolnym CI tekst jeszcze nie
+istnieje i test pada. `await expect(locator).toHaveText("OK")` czeka sam.
+</details>
+
+<details>
+<summary>Kiedy w teście E2E wolno mockować (<code>page.route</code>)?</summary>
+
+Tylko **zewnętrzne** API, których nie kontrolujesz (kursy walut, bramka płatności).
+Własnej bazy i własnego API — nigdy: po to są kontenery.
+</details>
 
 ---
 
@@ -607,12 +738,14 @@ Dwa formaty do wyboru:
 ```bash
 corepack enable
 pnpm install
-pnpm demo                 # sklep na żywo bez Dockera (do klikania)
-pnpm test:integration     # wymaga Dockera
-pnpm test:e2e             # wymaga Dockera + chromium
+pnpm demo                 # sklep na żywo bez kontenerów (do klikania)
+pnpm test:integration     # wymaga silnika kontenerów
+pnpm test:e2e             # wymaga silnika kontenerów + chromium
 pnpm exec playwright show-report
 ```
-Bez Dockera: czytaj kod, używaj `pnpm demo`, oglądaj zielone CI i artefakty trace.
+Silnik kontenerów = Docker **lub darmowy Rancher Desktop / Podman**
+([DOCKER-ALTERNATYWY.md](DOCKER-ALTERNATYWY.md)). Bez żadnego silnika: czytaj kod,
+używaj `pnpm demo`, oglądaj zielone CI i artefakty trace.
 
 > **Złota zasada szkolenia:** nie wdrażaj wszystkiego naraz. Zacznij od **jednego**
 > testu integracyjnego z Testcontainers i **jednego** E2E z fixture. Lepiej mieć
