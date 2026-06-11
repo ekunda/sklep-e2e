@@ -103,6 +103,23 @@ strong{color:var(--text);font-weight:700}
 .ag:hover{border-color:var(--accent);transform:translateX(3px);background:var(--bg3)}
 .ag .n{color:var(--accent2);font-family:var(--mono);font-weight:700;font-size:13px;min-width:46px}
 .ag .t{font-weight:600;font-size:15px}
+.ag .pt{margin-left:auto;flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.04em;
+  padding:3px 9px;border-radius:99px;background:var(--blue-bg);color:var(--blue);border:1px solid #60a5fa30}
+.ag .pt.p{background:var(--green-bg);color:var(--green);border-color:#34d39930}
+
+/* quiz */
+.quiz{display:grid;gap:12px;margin-top:22px}
+.qopt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--bg2);
+  border:1px solid var(--border);border-radius:var(--rs);padding:14px 18px;cursor:pointer;
+  font-family:var(--font);font-size:15px;color:var(--text);transition:.15s}
+.qopt:hover{border-color:var(--accent);transform:translateX(3px)}
+.qopt .l{flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  font-weight:800;background:var(--glow);color:var(--accent2);font-size:14px}
+.quiz.done .qopt{cursor:default;opacity:.45;transform:none}
+.quiz.done .qopt.good{opacity:1;border-color:var(--green);background:var(--green-bg)}
+.quiz.done .qopt.bad.picked{opacity:1;border-color:var(--red);background:var(--red-bg)}
+.qwhy{display:none}
+.quiz.done+.qwhy{display:flex;animation:in .3s}
 
 /* callout */
 .note{display:flex;gap:14px;background:var(--amber-bg);border:1px solid #fbbf2440;border-left:3px solid var(--amber);
@@ -159,6 +176,8 @@ svg text{font-family:var(--font)}
   .slide:last-child{page-break-after:auto}
   .code,.card,.step,.ag,.note,.bug{break-inside:avoid}
   .fix{display:block!important}  /* w PDF pokaż od razu poprawki bugów */
+  .qwhy{display:flex!important}  /* w PDF pokaż odpowiedzi quizów */
+  .quiz .qopt[data-ok]{border-color:var(--green);background:var(--green-bg)}
 }
 </style>
 </head>
@@ -189,13 +208,27 @@ svg text{font-family:var(--font)}
   <section class="slide">
     <div class="kicker">Plan</div>
     <h2>Co przejdziemy</h2>
-    <p class="lead">Kliknij temat, żeby do niego przeskoczyć. Uczymy się na prawdziwym kodzie z repo.</p>
+    <p class="lead">Teoria 🧠 przeplata się z praktyką 🛠️, a po drodze czekają krótkie quizy 🎮. Kliknij temat, żeby do niego przeskoczyć — uczymy się na prawdziwym kodzie z repo.</p>
     <div class="agenda" id="agenda"></div>
+  </section>
+
+  <!-- 2b ŚCIEŻKI STARTOWE -->
+  <section class="slide">
+    <div class="kicker">🛠️ Praktyka · setup</div>
+    <h2>Wybierz swoją <span class="grad">ścieżkę startową</span></h2>
+    <p class="lead">Nie masz Dockera? Spokojnie — każda z trzech ścieżek przeprowadzi Cię przez całe szkolenie.</p>
+    <div class="grid g3">
+      <div class="card hl"><span class="ic">🐳</span><h3 class="accent">Mam silnik kontenerów</h3><p>Docker, Rancher Desktop albo Podman. Pełny hands-on: <code>pnpm test:integration</code> + <code>pnpm test:e2e</code>.</p></div>
+      <div class="card"><span class="ic">🏢</span><h3 class="g">Firma bez licencji</h3><p>Docker Desktop bywa płatny w firmach. Darmowy zamiennik stawiasz w ~5 minut → następny slajd.</p></div>
+      <div class="card"><span class="ic">💻</span><h3 class="b">Tylko Node</h3><p>Zero kontenerów: <code>pnpm demo</code> + czytanie kodu + zielone CI. Przejdziesz ~80% materiału.</p></div>
+    </div>
+    <div class="code"><span class="tag">terminal — każda ścieżka zaczyna tak samo</span><pre>corepack enable <span class="kw">&amp;&amp;</span> pnpm install
+pnpm exec playwright install chromium</pre></div>
   </section>
 
   <!-- 3 PIRAMIDA -->
   <section class="slide">
-    <div class="kicker">Fundament</div>
+    <div class="kicker">🧠 Teoria · fundament</div>
     <h2>Trzy poziomy testów</h2>
     <p class="lead">Analogia samochodu: śrubka, połączone podzespoły, jazda z A do B.</p>
     <div class="grid g3">
@@ -208,7 +241,7 @@ svg text{font-family:var(--font)}
 
   <!-- 4 MOCKI vs TC -->
   <section class="slide">
-    <div class="kicker">Dlaczego Testcontainers</div>
+    <div class="kicker">🧠 Teoria · dlaczego Testcontainers</div>
     <h2>Mocki mogą <span class="r">kłamać</span></h2>
     <p class="lead">Mock powie „zapis się udał". Prawdziwa baza odrzuci zły typ, brakujący indeks albo złamany <code>UNIQUE</code>.</p>
     <table class="cmp">
@@ -221,9 +254,22 @@ svg text{font-family:var(--font)}
     <div class="note gn"><span>🧪</span><span>W <code>orders.test.ts</code> sprawdzamy <b>rollback transakcji</b> i constraint <b>UNIQUE</b> — rzeczy, których mock nie udowodni.</span></div>
   </section>
 
+  <!-- 4b QUIZ 1 -->
+  <section class="slide">
+    <div class="kicker">🎮 Quiz · 30 sekund</div>
+    <h2>Test sprawdza, że <code>sendEmail()</code> zostało wywołane.<br>Co tak naprawdę sprawdziliśmy?</h2>
+    <p class="lead">Kliknij odpowiedź — bez punktów, bez wstydu, sala głosuje na głos.</p>
+    <div class="quiz">
+      <button class="qopt"><span class="l">A</span><span>Że mail dotarł do użytkownika</span></button>
+      <button class="qopt" data-ok><span class="l">B</span><span>Że nasz kod <strong>zawołał funkcję</strong> — i nic więcej</span></button>
+      <button class="qopt"><span class="l">C</span><span>Że serwer pocztowy działa</span></button>
+    </div>
+    <div class="note gn qwhy"><span>💡</span><span>Mock sprawdza <b>rozmowę</b>, nie <b>rezultat</b>. Do maila (zewnętrzna usługa) — mock jest OK. Ale do <b>własnej bazy</b> chcesz rezultat: prawdziwy Postgres w kontenerze.</span></div>
+  </section>
+
   <!-- 5 ARCHITEKTURA -->
   <section class="slide">
-    <div class="kicker">Projekt sklep-e2e</div>
+    <div class="kicker">🧠 Teoria · projekt sklep-e2e</div>
     <h2>Architektura w jednym rzucie oka</h2>
     <div class="archwrap">
       <svg width="100%" viewBox="0 0 920 300" role="img" aria-label="Architektura aplikacji">
@@ -254,9 +300,9 @@ svg text{font-family:var(--font)}
 
   <!-- 5b TRANSAKCJA -->
   <section class="slide">
-    <div class="kicker">Co warto testować</div>
+    <div class="kicker">🧠 Teoria · co warto testować</div>
     <h2>Transakcja zamówienia — <span class="accent">wszystko albo nic</span></h2>
-    <p class="lead">Blokujemy wiersze produktów (<code>FOR UPDATE</code>), sprawdzamy stan, zmniejszamy go i zapisujemy zamówienie. Brakuje czegokolwiek → <span class="r">ROLLBACK</span> i magazyn nietknięty.</p>
+    <p class="lead">Zamówienie to kilka zapisów naraz: sprawdź stan magazynu, zmniejsz go, zapisz zamówienie. Jeśli cokolwiek po drodze się nie uda → <span class="r">ROLLBACK</span> i magazyn zostaje nietknięty. <code>FOR UPDATE</code> blokuje wiersz, żeby dwa zamówienia nie kupiły tej samej sztuki.</p>
     <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/src/routes/orders.routes.ts" target="_blank" rel="noopener">src/routes/orders.routes.ts ↗</a><pre><span class="kw">await</span> client.<span class="fn">query</span>(<span class="st">"BEGIN"</span>);
 <span class="kw">for</span> (<span class="kw">const</span> item <span class="kw">of</span> items) {
   <span class="kw">const</span> p = (<span class="kw">await</span> client.<span class="fn">query</span>(
@@ -273,7 +319,7 @@ svg text{font-family:var(--font)}
 
   <!-- 6 TESTCONTAINERS -->
   <section class="slide">
-    <div class="kicker">Testcontainers</div>
+    <div class="kicker">🧠 Teoria · Testcontainers</div>
     <h2>Prawdziwy kontener prosto z kodu testu</h2>
     <div class="steps">
       <div class="step"><span class="n">1</span><span>Test startuje → Testcontainers uruchamia kontener (np. <code>postgres:16</code>).</span></div>
@@ -289,9 +335,22 @@ svg text{font-family:var(--font)}
 <span class="fn">provide</span>(<span class="st">"databaseUrl"</span>, pg.<span class="fn">getConnectionUri</span>());</pre></div>
   </section>
 
+  <!-- 6b DARMOWE SILNIKI -->
+  <section class="slide">
+    <div class="kicker">🛠️ Praktyka · bez płatnych licencji</div>
+    <h2>Docker Desktop <span class="r">nie jest</span> jedyną opcją</h2>
+    <p class="lead">Testcontainers potrzebuje tylko silnika zgodnego z Docker API — a nie konkretnej firmy. Docker Desktop jest płatny w większych firmach. Te opcje są darmowe, także komercyjnie:</p>
+    <div class="grid g3">
+      <div class="card hl"><span class="ic">🐮</span><h3 class="accent">Rancher Desktop</h3><p><strong>Drop-in:</strong> wybierz silnik <code>dockerd (moby)</code> i… to wszystko. <code>docker info</code>, <code>docker pull</code> i testy działają bez żadnych zmian.</p></div>
+      <div class="card"><span class="ic">🦭</span><h3 class="g">Podman</h3><p>Dwie zmienne środowiskowe: <code>DOCKER_HOST</code> na pipe Podmana i <code>TESTCONTAINERS_RYUK_DISABLED=true</code>. Bonus: umie Hyper-V, gdy WSL2 nie działa.</p></div>
+      <div class="card"><span class="ic">🔌</span><h3 class="b">Plan B: zero silnika</h3><p><code>pnpm demo</code> (Postgres w WebAssembly) + testy w CI + trace z artefaktów. Cała ścieżka szkolenia przejdzie.</p></div>
+    </div>
+    <div class="note gn"><span>📖</span><span>Instrukcje krok po kroku: <a class="rl" href="https://github.com/ekunda/sklep-e2e/blob/main/szkolenie/DOCKER-ALTERNATYWY.md" target="_blank" rel="noopener">szkolenie/DOCKER-ALTERNATYWY.md ↗</a></span></div>
+  </section>
+
   <!-- 7 SEED PER TEST -->
   <section class="slide">
-    <div class="kicker">Seed per test</div>
+    <div class="kicker">🧠 Teoria · seed per test</div>
     <h2>Każdy test sieje <span class="accent">własne</span> dane</h2>
     <p class="lead">Koniec z globalnym seedem, który psuje się przy każdym nowym teście. Helper zwraca to, czego potrzebują asercje.</p>
     <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/helpers/seed.ts" target="_blank" rel="noopener">tests/helpers/seed.ts ↗</a><pre><span class="kw">export async function</span> <span class="fn">seedUser</span>(pool, options = {}) {
@@ -306,7 +365,7 @@ svg text{font-family:var(--font)}
 
   <!-- 9 VITEST GOTCHA -->
   <section class="slide">
-    <div class="kicker">Pułapka · Vitest</div>
+    <div class="kicker">🧠 Teoria · pułapka Vitest</div>
     <h2><code>process.env</code> z global-setup <span class="r">nie dociera</span> do testów</h2>
     <p class="lead">Klasyczny błąd: ustawiasz <code>DATABASE_URL</code> w global-setup, a workery testowe go nie widzą. Rozwiązanie to API <code>provide</code> / <code>inject</code>.</p>
     <div class="grid g2">
@@ -322,9 +381,22 @@ svg text{font-family:var(--font)}
     <div class="note"><span>🧩</span><span>Dodatkowo: <code>fileParallelism:false</code> — pliki integracyjne dzielą jeden kontener, więc nie mogą czyścić bazy równocześnie.</span></div>
   </section>
 
+  <!-- 9b QUIZ 2 -->
+  <section class="slide">
+    <div class="kicker">🎮 Quiz · 30 sekund</div>
+    <h2>Dwa testy używają <code>email: "test@test.com"</code>.<br>Osobno przechodzą, razem <span class="r">padają</span>. Dlaczego?</h2>
+    <p class="lead">To najczęstszy powód „flaky" testów na świecie. Kliknij odpowiedź.</p>
+    <div class="quiz">
+      <button class="qopt"><span class="l">A</span><span>Postgres ma buga przy równoległych zapisach</span></button>
+      <button class="qopt"><span class="l">B</span><span>Playwright klika szybciej, niż strona się ładuje</span></button>
+      <button class="qopt" data-ok><span class="l">C</span><span>Dane z pierwszego testu <strong>zostały w bazie</strong> — drugi wpada na <code>UNIQUE</code></span></button>
+    </div>
+    <div class="note gn qwhy"><span>💡</span><span>Brak izolacji = testy zależą od kolejności. Recepta z tego repo: <b>czysta baza w <code>beforeEach</code></b> + <b>unikalne dane z seedera</b> (np. <code>user-7@test.com</code>).</span></div>
+  </section>
+
   <!-- 10 FIXTURES -->
   <section class="slide">
-    <div class="kicker">Playwright · fixtures</div>
+    <div class="kicker">🧠 Teoria · Playwright fixtures</div>
     <h2>Fixture = gotowy element wstrzyknięty do testu</h2>
     <p class="lead"><code>page</code> to też fixture. My dokładamy własne: świeży użytkownik i produkt (seed per test) oraz strona z gotowym logowaniem.</p>
     <div class="code"><a class="tag" href="https://github.com/ekunda/sklep-e2e/blob/main/tests/e2e/fixtures.ts" target="_blank" rel="noopener">tests/e2e/fixtures.ts ↗</a><pre><span class="kw">export const</span> test = base.<span class="fn">extend</span>&lt;Fixtures&gt;({
@@ -343,9 +415,9 @@ svg text{font-family:var(--font)}
 
   <!-- 11 E2E LIFECYCLE -->
   <section class="slide">
-    <div class="kicker">Pułapka · kolejność</div>
+    <div class="kicker">🧠 Teoria · pułapka kolejności</div>
     <h2>Kontenery i serwer startują w <span class="accent">global-setup</span></h2>
-    <p class="lead">Cykl życia Playwright: config → <code>webServer</code> → globalSetup → testy. <span class="r">webServer rusza ZANIM global-setup</span> — a serwer potrzebuje URL-i z kontenerów. Dlatego serwer startujemy sami, w global-setup.</p>
+    <p class="lead">Playwright najpierw uruchamia wbudowany <code>webServer</code>, a <span class="r">dopiero potem</span> global-setup. Problem: nasz serwer potrzebuje adresów kontenerów, które powstają… właśnie w global-setup. Rozwiązanie: startujemy serwer sami — w global-setup.</p>
     <div class="steps">
       <div class="step"><span class="n">1</span><span>Start kontenerów Postgres + Redis</span></div>
       <div class="step"><span class="n">2</span><span>Migracje + <code>createApp()</code> z URL-ami kontenerów</span></div>
@@ -357,7 +429,7 @@ svg text{font-family:var(--font)}
 
   <!-- 12 TRACE -->
   <section class="slide">
-    <div class="kicker">Debugowanie</div>
+    <div class="kicker">🧠 Teoria · debugowanie</div>
     <h2>Trace — czarna skrzynka testu</h2>
     <p class="lead">Przy nieudanej próbie Playwright nagrywa timeline akcji, screenshoty, sieć i konsolę. Otwierasz i widzisz dokładnie, gdzie i kiedy pękło.</p>
     <div class="grid g2">
@@ -378,9 +450,22 @@ svg text{font-family:var(--font)}
     <div class="note gn"><span>🎞️</span><span><code>on-first-retry</code> = pełna czarna skrzynka tylko wtedy, gdy trzeba — bez zalewania dysku. Otwierasz: <code>pnpm exec playwright show-trace trace.zip</code>.</span></div>
   </section>
 
+  <!-- 12b QUIZ 3 -->
+  <section class="slide">
+    <div class="kicker">🎮 Quiz · 30 sekund</div>
+    <h2>Test padł na kliknięciu. W trace, w zakładce <span class="accent">Network</span>, widzisz <code class="r">500</code> na <code>/api/orders</code>. Kto zawinił?</h2>
+    <p class="lead">Dokładnie taką sytuację zobaczysz w ćwiczeniu „złam i napraw".</p>
+    <div class="quiz">
+      <button class="qopt"><span class="l">A</span><span>Selektor w teście — trzeba poprawić nazwę przycisku</span></button>
+      <button class="qopt" data-ok><span class="l">B</span><span><strong>Backend</strong> — UI nie miał czego wyrenderować, bo API zwróciło błąd</span></button>
+      <button class="qopt"><span class="l">C</span><span>Za krótki timeout — wystarczy go zwiększyć</span></button>
+    </div>
+    <div class="note gn qwhy"><span>💡</span><span>Po to jest trace: zamiast zgadywać i „zwiększać timeouty", patrzysz w <b>Network</b> i <b>Console</b> — i od razu wiesz, w której warstwie szukać. Nawyk: czerwona akcja → Network → Console.</span></div>
+  </section>
+
   <!-- 13 CI -->
   <section class="slide">
-    <div class="kicker">CI · GitHub Actions</div>
+    <div class="kicker">🧠 Teoria · CI · GitHub Actions</div>
     <h2>Zielony pipeline na pnpm</h2>
     <div class="grid g2">
       <div>
@@ -403,7 +488,7 @@ svg text{font-family:var(--font)}
 
   <!-- 14 BUGS -->
   <section class="slide">
-    <div class="kicker">Lekcja z prawdziwego życia</div>
+    <div class="kicker">🛠️ Praktyka · lekcja z prawdziwego życia</div>
     <h2>Co złapało CI (a <code>tsc</code> nie)</h2>
     <p class="lead">Dwa prawdziwe bugi, które wyszły dopiero przy uruchomieniu testów. Dokładnie po to one są.</p>
     <div class="bug">
@@ -421,7 +506,7 @@ svg text{font-family:var(--font)}
 
   <!-- ZŁAM I NAPRAW -->
   <section class="slide">
-    <div class="kicker">Ćwiczenie</div>
+    <div class="kicker">🛠️ Praktyka · ćwiczenie</div>
     <h2>Złam i napraw 🔧</h2>
     <p class="lead">Najlepsza nauka debugowania: zepsuj → zobacz porażkę → przeczytaj trace → napraw.</p>
     <div class="steps">
@@ -434,7 +519,7 @@ svg text{font-family:var(--font)}
 
   <!-- 14b DEMO NA ŻYWO -->
   <section class="slide">
-    <div class="kicker">Na żywo</div>
+    <div class="kicker">🛠️ Praktyka · na żywo</div>
     <h2>Pokaż sklep w akcji — <span class="accent">bez Dockera</span></h2>
     <p class="lead">Tryb demo uruchamia tę samą aplikację na <strong>PGlite</strong> (PostgreSQL w WebAssembly) i cache'u w pamięci. Zero kontenerów — idealne na prezentację z laptopa.</p>
     <div class="grid g2">
@@ -455,7 +540,7 @@ pnpm demo
 
   <!-- DOBRZE vs ŹLE -->
   <section class="slide">
-    <div class="kicker">Jak pisać testy</div>
+    <div class="kicker">🧠 Teoria · jak pisać testy</div>
     <h2><span class="r">Źle</span> vs <span class="g">dobrze</span> — przykłady</h2>
     <p class="lead">Ten sam cel, dwa podejścia. Po prawej — tak jak w naszych testach z repo.</p>
     <div class="grid g2">
@@ -481,7 +566,7 @@ page.<span class="fn">getByRole</span>(<span class="st">"button"</span>, { name:
 
   <!-- 16 ANTI-FLAKY -->
   <section class="slide">
-    <div class="kicker">Higiena</div>
+    <div class="kicker">🧠 Teoria · higiena testów</div>
     <h2>Anti-flaky checklist</h2>
     <div class="grid g2">
       <ul class="bul">
@@ -547,29 +632,29 @@ const cur=document.getElementById('cur');
 const dotsEl=document.getElementById('dots');
 document.getElementById('tot').textContent=total;
 
-const titles=['Wprowadzenie','Plan','Poziomy testów','Mocki vs Testcontainers','Architektura','Transakcja zamówienia','Testcontainers','Seed per test','Pułapka Vitest','Fixtures Playwright','Cykl życia E2E','Trace','CI / Actions','Bugi z CI','Złam i napraw','Demo na żywo','Dobrze vs źle','Anti-flaky','Materiały','Podsumowanie'];
+const titles=['Wprowadzenie','Plan','Ścieżki startowe','Poziomy testów','Mocki vs Testcontainers','Quiz: mock czy baza','Architektura','Transakcja zamówienia','Testcontainers','Darmowe silniki','Seed per test','Pułapka Vitest','Quiz: izolacja','Fixtures Playwright','Cykl życia E2E','Trace','Quiz: czytanie trace','CI / Actions','Bugi z CI','Złam i napraw','Demo na żywo','Dobrze vs źle','Anti-flaky','Materiały','Podsumowanie'];
 
 // dots
 slides.forEach((_,n)=>{const d=document.createElement('i');d.onclick=()=>go(n);dotsEl.appendChild(d);});
 const dots=[...dotsEl.children];
 
-// agenda — [etykieta, tytuł slajdu docelowego]; odporne na zmianę kolejności
+// agenda — [etykieta, tytuł slajdu docelowego, część T/P]; odporne na zmianę kolejności
 const ag=document.getElementById('agenda');
 const agenda=[
-  ['Po co testy','Mocki vs Testcontainers'],
-  ['Demo sklepu na żywo','Demo na żywo'],
-  ['Testcontainers + integracja','Testcontainers'],
-  ['Seed per test','Seed per test'],
-  ['Playwright fixtures','Fixtures Playwright'],
-  ['Trace — debugowanie','Trace'],
-  ['Złam i napraw','Złam i napraw'],
-  ['Dobre vs złe testy','Dobrze vs źle'],
-  ['CI i skalowanie','CI / Actions'],
-  ['Materiały','Materiały'],
+  ['Po co testy','Mocki vs Testcontainers','T'],
+  ['Ścieżki startowe + darmowe silniki','Ścieżki startowe','P'],
+  ['Demo sklepu na żywo','Demo na żywo','P'],
+  ['Testcontainers + integracja','Testcontainers','T'],
+  ['Seed per test','Seed per test','T'],
+  ['Playwright fixtures','Fixtures Playwright','T'],
+  ['Trace — debugowanie','Trace','T'],
+  ['Złam i napraw','Złam i napraw','P'],
+  ['Dobre vs złe testy','Dobrze vs źle','T'],
+  ['CI i skalowanie','CI / Actions','T'],
 ];
-agenda.forEach(([label,title])=>{const idx=titles.indexOf(title);if(idx<0)return;
+agenda.forEach(([label,title,part])=>{const idx=titles.indexOf(title);if(idx<0)return;
   const el=document.createElement('div');el.className='ag';
-  el.innerHTML=`<span class="t">${label}</span>`;
+  el.innerHTML=`<span class="t">${label}</span><span class="pt ${part==='P'?'p':''}">${part==='P'?'🛠️ praktyka':'🧠 teoria'}</span>`;
   el.onclick=()=>go(idx);ag.appendChild(el);});
 
 function go(n){
@@ -599,6 +684,14 @@ document.getElementById('revealBtn').onclick=function(){
   document.querySelectorAll('[data-fix]').forEach(f=>f.classList.add('show'));
   this.style.display='none';
 };
+// quizy — klik w odpowiedź podświetla poprawną i pokazuje wyjaśnienie
+document.querySelectorAll('.quiz .qopt').forEach(o=>o.addEventListener('click',function(){
+  const q=this.closest('.quiz');
+  if(q.classList.contains('done'))return;
+  q.classList.add('done');
+  this.classList.add('picked');
+  q.querySelectorAll('.qopt').forEach(x=>x.classList.add(x.hasAttribute('data-ok')?'good':'bad'));
+}));
 go(0);
 </script>
 </body>
